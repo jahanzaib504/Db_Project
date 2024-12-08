@@ -12,6 +12,7 @@ import FriendPage from './View/Pages/FriendPage';
 import NotificationPage from './View/Pages/NotificationPage';
 import AuthRoute from './Routes/AuthRoute';
 import PostPage from './View/Pages/PostPage';
+import CreatePost from './View/Pages/CreatePost';
 
 const App = () => {
   const { setUserDetails, userDetails,setLoading } = useContext(UserContext); // Use context here
@@ -44,6 +45,7 @@ const App = () => {
         <Route path="/friend" element={<AuthRoute><FriendPage /></AuthRoute>} />
         <Route path="/notifications" element={<AuthRoute><NotificationPage /></AuthRoute>} />
         <Route path='/post/:post_id' element={<AuthRoute><PostPage/></AuthRoute>}></Route>
+        <Route path='/post/create' element={<AuthRoute><CreatePost/></AuthRoute>}></Route>
       </Routes>
     </Router>
   );

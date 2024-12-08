@@ -8,7 +8,12 @@ const app = express();
 const {tokenMiddleware} = require('./MiddleWares/tokenVerification');
 //MiddleWares
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json({ limit: "200mb" })); // Adjust limit as needed
+app.use(express.urlencoded({ limit: "200mb", extended: true }));
+app.use((req, res, next) => {
+    console.log(`Content-Length: ${req.headers["content-length"] || 0} bytes`);
+    next();
+});
 
 // Start the server
 app.listen(3000, () => {

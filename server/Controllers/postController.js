@@ -5,7 +5,7 @@ const delete_post = (req, res) => {
     const { post_id } = req.params;
     const { user_id } = req.user;
     
-    // Attempt to delete the post and its attachments in a single query
+   
     connection.query(
         'DELETE FROM post WHERE user_id = ? AND post_id = ?',
         [user_id, post_id],
@@ -100,7 +100,7 @@ const get_feed = (req, res) => {
 
     // Adjust the query to include before_post_id
     connection.query(query, [user_id, user_id], (err, posts) => {
-        console.log(posts);
+       
         if (err) {
             return res.status(500).json({ message: "Error fetching posts", error: err.message });
         }
@@ -138,26 +138,52 @@ const get_feed = (req, res) => {
 
 
 // Add Post API
+const { Buffer } = require("buffer");
+
 const add_post = (req, res) => {
-    const { post } = req.body;
+    const { caption, content, images, videos } = req.body.post || {}; 
     const { user_id } = req.user;
+ 
+    if (!caption || !content) {
+        return res.status(400).json({ message: "Caption and content are required" });
+    }
 
     const query = 'INSERT INTO post(user_id, caption, content) VALUES(?, ?, ?)';
-    const params = [user_id, post.caption, post.content];
+    const params = [user_id, caption, content];
 
     connection.query(query, params, (err, result) => {
         if (err) {
             return res.status(500).json({ message: "Error adding post", error: err.message });
         }
 
-        // Insert attachments (images/videos) if any
-        insert_attachments(post.images, result.insertId, 0, () => {
-            insert_attachments(post.videos, result.insertId, 1, () => {
-                res.status(201).json({ message: "Post added successfully", postId: result.insertId });
-            });
+        // Insert images as BLOBs
+        images.forEach((imageBase64, index) => {
+            const imageBuffer = Buffer.from(imageBase64.split(",")[1], "base64"); // Remove the data URI part and decode it
+            console.log(imageBuffer)
+            insert_attachments(imageBuffer, result.insertId, 0, index);
         });
+
+        // Insert videos as BLOBs
+        videos.forEach((videoBase64, index) => {
+            const videoBuffer = Buffer.from(videoBase64.split(",")[1], "base64");
+            insert_attachments(videoBuffer, result.insertId, 1, index);
+        });
+
+        res.status(201).json({ message: "Post added successfully", postId: result.insertId });
     });
 };
+
+// Helper function to insert BLOBs
+const insert_attachments = (fileBuffer, postId, type, index) => {
+    const query = 'INSERT INTO attachments(post_id, url, file_type) VALUES(?, ?, ?)';
+    const params = [postId, fileBuffer, type]; // 0 for image, 1 for video
+    connection.query(query, params, (err) => {
+        if (err) {
+            console.error("Error inserting attachment:", err);
+        }
+    });
+};
+
 
 // Like Post API
 const like_post = (req, res) => {
@@ -205,29 +231,7 @@ const like_post = (req, res) => {
 
 
 // Helper function to insert attachments
-function insert_attachments(attachments, post_id, file_type, callback) {
-    if (attachments && attachments.length > 0) {
-        const insertPromises = attachments.map(attachment =>
-            connection.query('INSERT INTO attachments(post_id, url, file_type) VALUES(?, ?, ?)', [post_id, attachment, file_type])
-        );
 
-        // Wait for all insertions to complete
-        let completedInserts = 0;
-        insertPromises.forEach((query, index) => {
-            query((err) => {
-                if (err) {
-                    return callback(err);
-                }
-                completedInserts++;
-                if (completedInserts === insertPromises.length) {
-                    callback();
-                }
-            });
-        });
-    } else {
-        callback();
-    }
-}
 
 // Helper function to fetch additional data for posts
 function fetchOther(connection, post, user,callback) {
