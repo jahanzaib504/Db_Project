@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useContext, useEffect } from 'react';
 import api from './axios';
 import UserContext, { UserProvider } from './UserContext';
@@ -14,6 +14,7 @@ import PostPage from './View/Pages/PostPage';
 import CreatePost from './View/Pages/CreatePost';
 
 const App = () => {
+  
   const { setUserDetails, userDetails,setLoading } = useContext(UserContext); // Use context here
 
   useEffect(() => {
@@ -36,6 +37,7 @@ const App = () => {
   return (
     <Router>
       <Routes>
+        <Route path='/' element={<Navigate to='/feed'></Navigate>}></Route>
         <Route path="log-in" element={<LogInPage />} />
         <Route path="sign-up" element={<SignUp />} />
         <Route path="/feed" element={<AuthRoute><HomePage /></AuthRoute>} />
