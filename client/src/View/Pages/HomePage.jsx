@@ -211,7 +211,7 @@ const HomePage = () => {
 
           <div className="menu-item flex pb-3">
             <img src="/imgdb/plus.png" alt="" />
-            <p className="hide m-0 ps-1" style={{ '--delay': '300ms' }}>Post</p>
+            <Link to='/post/create' className="hide m-0 ps-1" style={{ '--delay': '300ms' }}>Post</Link>
           </div>
         </div>
       </div>

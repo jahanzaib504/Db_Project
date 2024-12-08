@@ -90,7 +90,7 @@ const NotificationPage = () => {
         peopleYouMayKnow.map((person) => (
           <div className="d-flex align-items-center mb-3" key={person.user_id}>
             <img
-              src={Photo(person.profile_picture)}
+              src={person.profile_picture && Photo(person.profile_picture) || '/imgdb/profile.png'}
               alt="Profile"
               className="rounded-circle me-3"
               width="50"
@@ -110,7 +110,7 @@ const NotificationPage = () => {
         friendRequests.map((fr) => (
           <div className="d-flex align-items-center mb-3" key={fr.user_id2}>
             <img
-              src={Photo(fr.profile_picture)}
+              src={fr.profile_picture && Photo(fr.profile_picture) || '/imgdb/profile.png'}
               alt="Profile"
               className="rounded-circle me-3"
               width="50"
@@ -141,7 +141,7 @@ const NotificationPage = () => {
         pendingRequests.map((pr) => (
           <div className="d-flex align-items-center mb-3" key={pr.user_id1}>
             <img
-              src={Photo(pr.profile_picture)}
+              src={pr.profile_picture && Photo(pr.profile_picture) || '/imgdb/profile.png'}
               alt="Profile"
               className="rounded-circle me-3"
               width="50"

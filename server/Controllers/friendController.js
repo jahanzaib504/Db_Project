@@ -88,7 +88,7 @@ const reject_request = async (req, res) => {
 };
 const get_friend_requests = async(req, res)=>{
   const {user_id} = req.user;
-  connection.query('select f.*, u.profile_picture from friend f join user u on u.user_id = f.user_id1 where f.user_id2 = ? and f.status = 0', [user_id], (err, result)=>{
+  connection.query('select f.*, u.profile_picture, u.user_name from friend f join user u on u.user_id = f.user_id1 where f.user_id2 = ? and f.status = 0', [user_id], (err, result)=>{
     if(err)
      return res.status(500).json({message: "Internal Sever Error"});
     if(result.length == 0)
@@ -99,7 +99,7 @@ const get_friend_requests = async(req, res)=>{
 }
 const get_pending_requests = async(req, res)=>{
   const {user_id} = req.user;
-  connection.query('select f.*, u.profile_picture from friend f join user u on u.user_id = f.user_id2 where f.user_id1 = ? and f.status = 0', [user_id], (err, result)=>{
+  connection.query('select f.*, u.profile_picture, u.user_name from friend f join user u on u.user_id = f.user_id2 where f.user_id1 = ? and f.status = 0', [user_id], (err, result)=>{
     if(err)
      return res.status(500).json({message: "Internal Sever Error"});
     if(result.length == 0)

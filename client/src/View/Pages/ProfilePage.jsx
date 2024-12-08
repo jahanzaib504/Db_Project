@@ -6,7 +6,7 @@ import Post from "../Components/Post";
 import UserContext from "../../UserContext";
 import React from 'react';
 import axios from "axios";
-
+import { Link } from "react-router-dom";
 const change_pp = async()=>{
 
 }
@@ -256,30 +256,30 @@ const ProfilePage = () => {
             </div>
           </div>
           <div className="menu">
-            <div className="menu-item flex pb-3">
-              <img src="/imgdb/home.png" alt="" />
-              <p className="hide m-0 ps-1" style={{ '--delay': '300ms' }}>Home</p>
-            </div>
+          <div className="menu-item flex pb-3">
+            <img src="/imgdb/home.png" alt="" />
+            <Link to='/feed' className="hide m-0 ps-1" style={{ '--delay': '300ms' }}>Home</Link>
+          </div>
 
-            <div className="menu-item flex pb-3">
-              <img src="/imgdb/bell.png" alt="" />
-              <p className="hide m-0 ps-1" style={{ '--delay': '300ms' }}>Notification</p>
-            </div>
+          <div className="menu-item flex pb-3">
+            <img src="/imgdb/bell.png" alt="" />
+            <Link to = '/notifications' className="hide m-0 ps-1" style={{ '--delay': '300ms' }}>Notification</Link>
+          </div>
 
-            <div className="menu-item flex pb-3">
-              <img src="/imgdb/message.png" alt="" />
-              <p className="hide m-0 ps-1" style={{ '--delay': '300ms' }}>Messages</p>
-            </div>
+          <div className="menu-item flex pb-3">
+            <img src="/imgdb/message.png" alt="" />
+            <Link to = '/friend' className="hide m-0 ps-1" style={{ '--delay': '300ms' }}>Messages</Link>
+          </div>
 
-            <div className="menu-item flex pb-3">
-              <img src="/imgdb/profile.png" alt="" />
-              <p className="hide m-0 ps-1" style={{ '--delay': '300ms' }}>Profile</p>
-            </div>
+          <div className="menu-item flex pb-3">
+            <img src="/imgdb/profile.png" alt="" />
+            <Link to={`/profile/${userDetails.user_name}`} className="hide m-0 ps-1" style={{ '--delay': '300ms' }}>Profile</Link>
+          </div>
 
-            <div className="menu-item flex pb-3">
-              <img src="/imgdb/plus.png" alt="" />
-              <p className="hide m-0 ps-1" style={{ '--delay': '300ms' }}>Post</p>
-            </div>
+          <div className="menu-item flex pb-3">
+            <img src="/imgdb/plus.png" alt="" />
+            <Link to='/post/create' className="hide m-0 ps-1" style={{ '--delay': '300ms' }}>Post</Link>
+          </div>
           </div>
         </div>
       </div>

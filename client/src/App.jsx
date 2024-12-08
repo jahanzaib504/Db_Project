@@ -7,7 +7,6 @@ import HomePage from './View/Pages/HomePage';
 import LogInPage from './View/Pages/LogInPage';
 import SignUp from './View/Pages/SignUpPage';
 import ProfilePage from './View/Pages/ProfilePage';
-import UpdateProfilePage from './View/Pages/UpdateProfilePage';
 import FriendPage from './View/Pages/FriendPage';
 import NotificationPage from './View/Pages/NotificationPage';
 import AuthRoute from './Routes/AuthRoute';
@@ -41,7 +40,6 @@ const App = () => {
         <Route path="sign-up" element={<SignUp />} />
         <Route path="/feed" element={<AuthRoute><HomePage /></AuthRoute>} />
         <Route path="/profile/:user_name" element={<AuthRoute><ProfilePage /></AuthRoute>} />
-        <Route path="/update-profile" element={<AuthRoute><UpdateProfilePage /></AuthRoute>} />
         <Route path="/friend" element={<AuthRoute><FriendPage /></AuthRoute>} />
         <Route path="/notifications" element={<AuthRoute><NotificationPage /></AuthRoute>} />
         <Route path='/post/:post_id' element={<AuthRoute><PostPage/></AuthRoute>}></Route>
